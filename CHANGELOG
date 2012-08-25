@@ -1,0 +1,21 @@
+BlackBerry VSMTools - created by sc0ty, 2010
+
+email:	sc0typl@gmail.com
+site:	http://sc0ty.pl
+
+CHANGELOG
+
+v0.7
+ - opened source under GPL licence
+ - minor fixes and optimizations
+
+v0.65
+ - check resource size before including in create mode
+
+v0.6
+ - implemented modification options
+ - minor fixes
+
+v0.5 BETA
+ - first relased version
+ 

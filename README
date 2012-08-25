@@ -1,0 +1,86 @@
+BlackBerry VSMTools v0.7 - created by sc0ty
+
+email:	sc0typl@gmail.com
+site:	http://sc0ty.pl
+
+1. About VSM files
+VSM files are BlackBerry branding files. Every VSM file contain resources like startup
+image, specified value of time to show this image, default ringtone, internet
+configuration etc. Resources are identified by id numbers. Every ID has its own specified
+function, e.g. resource id 0x00 is startup image and id 0x1003 is welcome message subject.
+Using VSMTools you can extract resources from VSM file (every resources will be extracted
+to separate file) or create your own VSM using your own resource files. You can obtain
+more information about resource ids reading resources.txt file or visit urls:
+http://www.blackberry.com/developers/docs/4.2api/net/rim/device/api/system/Branding.html
+http://www.blackberry.com/developers/docs/4.1api/net/rim/device/api/system/Branding.html
+VSM file contains also Vendor ID (IDs and coresponding names are listed in vendors.txt),
+and can contain footer with digital sign. This software is unable to sign VSM files.
+You can load VSM files into BlackBerry using MML software.
+
+2. VSMTools commands
+
+2.1. VSM file extraction
+To extract VSM file use:
+vsmtools -e VSM_FILE.VSM [OUTPUT_DIR]
+    VSM_FILE.VSM    - path to input VSM file
+    [OUTPUT_DIR]    - output directory (optional)
+
+Resources will be extracted to specified directory, every resource will be named like
+resXXXX_DESCRIPTION.bin, where XXXX is resource ID. There will be also created header.bin
+(it is VSM header) and footer.bin (if VSM contains any footer).
+
+Egzamples:
+	vsmtools -e file.vsm
+	vsmtools -e file.vsm "output directory"
+
+2.2. VSM file creation
+To create VSM file use:
+vsmtools -c [options] INPUT_DIR [VSN_FILE.VSM]
+	INPUT_DIR	    - path to resources directory
+	[VSM_FILE.VSM]	- output VSM file (optional)
+optional options:
+    -vid x      - set Vendor ID to x (decimal value)
+    -dh         - generate default header (don't load header.bin)
+    -df         - don't include footer section from footer.bin
+    -v x.x.x.x  - set verson file number
+
+Resources in INPUT_DIR must be named like resXXXXwhatever, where XXXX is resource ID
+(for egzample "res0002_FIELD_BITMAP_2_DATA.png" or "res1002"). Every resource file
+should be not larger than 65535 byte, otherwise it will be truncated. There should
+be also 28-bytes header file (header.bin), or you can generate your own header using -dh.
+If there is footer.bin it will be inserted at the end of the file (you can prevent it
+using -df switch). You can set your own version number using -v switch - for egzample
+-v 1.0.0.123.
+File names in resources directory are compatibile between extract and create command.
+
+Egzamples:
+	vsmtools -c MY_VSM_DIR
+	vsmtools -c -vid 123 -df MY_VSM_DIR my.vsm
+	vsmtools -c -v 1.10.2.100 MY_VSM_DIR
+
+2.3. Gathering VSM file information
+To show VSM file information use:
+vsmtools -i VSN_FILE.VSM
+    VSM_FILE.VSM    - path to input VSM file
+
+This command show you file information, list of resources and other file parameters.
+
+Egzamples:
+	vsmtools -i file.vsm
+
+2.4. Modify VSM file
+To modify VSM file use:
+vsmtools -m [options] VSM_FILE.VSM
+	VSM_FILE.VSM	- input VSM file
+optional options:
+    -h file.bin - load header form file (header.bin or other VSM file)
+    -vid x      - set Vendor ID to x (decimal value)
+    -cs         - calculate and write correct resources checksum
+    -v x.x.x.x  - set verson file (format: 1.0.0.123)
+    -db         - don't backup modified file
+
+Before modification there will be backup file created (with bak extension). If you don't
+want that, use -db switch.
+Modufy function rewrite only header data, there is no need to recalculate checksum.
+
+BlackBerry VSMTools v0.7 - created by sc0ty
